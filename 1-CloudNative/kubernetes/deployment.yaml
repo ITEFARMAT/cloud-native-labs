@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: example
+  namespace: sample-app
+  labels:
+    app: example
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: example
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 10%
+      maxUnavailable: 30%
+  template:
+    metadata:
+      labels:
+        app: example
+    spec:
+      containers:
+      - name: example
+        image: "gcr.io/google-samples/hello-app:1.0"
+        imagePullPolicy: "IfNotPresent"
+        ports:
+        - containerPort: 8080
+          name: http
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "200m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+
+
